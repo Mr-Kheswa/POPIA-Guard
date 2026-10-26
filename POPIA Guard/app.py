@@ -178,4 +178,5 @@ def dashboard():
 
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True)
+    # Bound to 0.0.0.0 so GitHub cloud proxies can route traffic to UI views cleanly
+    app.run(host='0.0.0.0', port=5000, debug=True)

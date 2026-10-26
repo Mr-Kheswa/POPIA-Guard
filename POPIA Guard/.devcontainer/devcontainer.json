@@ -1,0 +1,13 @@
+{
+    "name": "PopiaGuard Cloud Run",
+    "image": "://microsoft.com",
+    "postCreateCommand": "pip install flask",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python"
+            ]
+        }
+    },
+    "forwardPorts": [5000]
+}
