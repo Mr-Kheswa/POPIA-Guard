@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Compliance Records Room</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-canvas: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --brand-primary: #0f766e;
+            --border-color: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-canvas); color: var(--text-main); padding: 2rem 1.5rem; }
+
+        /* Dashboard Top Level Controls Structure */
+        .dashboard-header { max-width: 1200px; margin: 0 auto 2rem auto; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.25rem; gap: 1rem; flex-wrap: wrap; }
+        .dashboard-header h1 { font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
+        .dashboard-header p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem; }
+        
+        .logout-btn { background-color: #f1f5f9; color: #dc2626; border: 1px solid #fecaca; text-decoration: none; padding: 0.5rem 1rem; font-size: 0.85rem; font-weight: 600; border-radius: 6px; transition: all 0.2s; }
+        .logout-btn:hover { background-color: #fef2f2; }
+
+        /* Summary Analytics cards grid framework */
+        .metrics-grid { max-width: 1200px; margin: 0 auto 1.5rem auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; width: 100%; }
+        .metric-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); border-left: 4px solid var(--brand-primary); }
+        .metric-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .metric-value { font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-top: 0.25rem; }
+
+        /* Advanced Responsive Layout Table Design */
+        .table-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; max-width: 1200px; margin: 0 auto; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); overflow: hidden; }
+        .table-responsive { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+        
+        th { background-color: #f8fafc; color: var(--text-main); font-weight: 600; padding: 1rem; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
+        td { padding: 1rem; border-bottom: 1px solid var(--border-color); color: #334155; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f8fafc; }
+
+        /* Styled status indicators badge chips layout formatting */
+        .badge { display: inline-block; padding: 0.25rem 0.6rem; font-size: 0.75rem; font-weight: 700; border-radius: 50px; text-transform: uppercase; text-align: center; }
+        .badge-granted { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .badge-revoked { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+        
+        code { font-family: monospace; font-size: 0.9rem; background-color: #f1f5f9; padding: 0.15rem 0.35rem; border-radius: 4px; color: #0f766e; font-weight: 600; }
+        .timestamp { font-size: 0.8rem; color: var(--text-muted); }
+        .empty-row { text-align: center; color: var(--text-muted); padding: 3rem !important; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <header class="dashboard-header">
+        <div>
+            <h1>🛡️ Corporate Compliance Room</h1>
+            <p>Relational Database Tracking Logs (Module Ingestion Analytics View)</p>
+        </div>
+        <a href="/logout" class="logout-btn">Secure Exit Dashboard</a>
+    </header>
+
+    <!-- Structural Metrics Widgets -->
+    <section class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-title">Compliance Core Framework</div>
+            <div class="metric-value">POPIA Legal Guard</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Back-End Pipeline Engine</div>
+            <div class="metric-value">SQLite Ledger</div>
+        </div>
+    </section>
+
+    <!-- Audited Database Table Presentation Layout Module -->
+    <main class="table-card">
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Consumer Registered Name</th>
+                        <th>South African ID</th>
+                        <th>Email Address</th>
+                        <th style="text-align: center;">Marketing Choice</th>
+                        <th style="text-align: center;">Third-Party Check</th>
+                        <th>Immutable Log Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if records %}
+                        {% for row in records %}
+                        <tr>
+                            <td style="font-weight: 500;">{{ row['full_name'] }}</td>
+                            <td><code>{{ row['sa_id_number'] }}</code></td>
+                            <td>{{ row['email_address'] }}</td>
+                            <td style="text-align: center;">
+                                {% if row['marketing_opt_in'] == 1 %}
+                                    <span class="badge badge-granted">GRANTED</span>
+                                {% else %}
+                                    <span class="badge badge-revoked">REVOKED</span>
+                                {% endif %}
+                            </td>
+                            <td style="text-align: center;">
+                                {% if row['third_party_share'] == 1 %}
+                                    <span class="badge badge-granted">GRANTED</span>
+                                {% else %}
+                                    <span class="badge badge-revoked">REVOKED</span>
+                                {% endif %}
+                            </td>
+                            <td class="timestamp">{{ row['action_timestamp'] }}</td>
+                        </tr>
+                        -- {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="empty-row">The transactional relational database index is empty. No user logs found.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Privacy File Vault</title>
+    <!-- Google Fonts Sans-Serif Import -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-canvas: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --brand-primary: #0f766e;
+            --border-color: #e2e8f0;
+            --accent-success: #16a34a;
+            --accent-warning: #ea580c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-canvas); color: var(--text-main); padding: 2rem 1rem; display: flex; flex-direction: column; align-items: center; }
+
+        .profile-container { width: 100%; max-width: 680px; animation: fadeIn 0.3s ease-out; }
+        
+        /* Dashboard Control Header Layout */
+        .header-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; width: 100%; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+        .header-panel h1 { font-size: 1.3rem; font-weight: 700; color: var(--text-main); }
+        .btn-exit { background-color: #f1f5f9; color: #dc2626; border: 1px solid #fecaca; text-decoration: none; padding: 0.5rem 1rem; font-size: 0.85rem; font-weight: 600; border-radius: 6px; transition: background 0.2s; }
+        .btn-exit:hover { background-color: #fef2f2; }
+
+        /* Master UI Container Grid Profile Cards */
+        .card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); padding: 2rem; margin-bottom: 1.5rem; }
+        .card h2 { font-size: 1.1rem; font-weight: 700; color: var(--brand-primary); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+        
+        /* Personal Identification Metric Layout mapping */
+        .data-row { display: flex; justify-content: space-between; padding: 0.85rem 0; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
+        .data-row:last-child { border-bottom: none; }
+        .data-label { font-weight: 600; color: var(--text-main); }
+        .data-value { color: #334155; }
+        code { font-family: monospace; font-size: 0.95rem; background-color: #f1f5f9; padding: 0.15rem 0.4rem; border-radius: 4px; color: var(--brand-primary); font-weight: 600; }
+
+        /* Custom Privacy status chips indicators */
+        .status-pill { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.75rem; font-size: 0.8rem; font-weight: 700; border-radius: 50px; background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .status-pill.revoked { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+
+        /* Action item task options management links buttons */
+        .action-zone { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+        .btn-action { flex: 1; min-width: 180px; background-color: #ffffff; border: 1px solid var(--border-color); text-align: center; color: var(--text-main); text-decoration: none; padding: 0.75rem; font-size: 0.85rem; font-weight: 600; border-radius: 8px; transition: all 0.2s; cursor: pointer; }
+        .btn-action:hover { background-color: #f8fafc; border-color: var(--brand-primary); color: var(--brand-primary); }
+        .btn-delete { border-color: #fecaca; color: #dc2626; }
+        .btn-delete:hover { background-color: #fef2f2; border-color: #dc2626; color: #dc2626; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-container">
+        
+        <header class="header-panel">
+            <div>
+                <h1>👤 Personal Data Hub</h1>
+                <p class="data-value" style="font-size: 0.85rem; color: var(--text-muted);">Welcome back, {{ profile['full_name'] }}</p>
+            </div>
+            <a href="/logout" class="btn-exit">Log Out Cleanly</a>
+        </header>
+
+        <!-- Customer Core Demographic Record Snapshot Card -->
+        <main class="card">
+            <h2>Identification Parameters</h2>
+            <div class="data-row">
+                <span class="data-label">Full Name Map</span>
+                <span class="data-value">{{ profile['full_name'] }}</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Verified South African ID</span>
+                <span class="data-value"><code>{{ profile['sa_id_number'] }}</code></span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Communication Channel Endpoint</span>
+                <span class="data-value">{{ profile['email_address'] }}</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Registration Datestamp</span>
+                <span class="data-value" style="font-size: 0.85rem; color: var(--text-muted);">{{ profile['created_at'] }}</span>
+            </div>
+        </main>
+
+        <!-- Regulatory Data Processing Consent Logs Tracker Mapping Container Card -->
+        <section class="card">
+            <h2>Active POPIA Consents</h2>
+            <div class="data-row">
+                <span class="data-label">Direct Corporate Marketing Channels</span>
+                <div>
+                    {% if profile['marketing_opt_in'] == 1 %}
+                        <span class="status-pill">ACTIVE OPT-IN</span>
+                    {% else %}
+                        <span class="status-pill revoked">REVOKED / OPT-OUT</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="data-row">
+                <span class="data-label">External Third-Party Verification Verification Systems</span>
+                <div>
+                    {% if profile['third_party_share'] == 1 %}
+                        <span class="status-pill">ACTIVE OPT-IN</span>
+                    {% else %}
+                        <span class="status-pill revoked">REVOKED / OPT-OUT</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="data-row" style="border-top: 1px dashed var(--border-color); margin-top: 0.5rem; padding-top: 1rem;">
+                <span class="data-label" style="font-size: 0.8rem; color: var(--text-muted);">Audit Verification Timestamp</span>
+                <span class="data-value font-monospace" style="font-size: 0.8rem; color: var(--text-muted);">{{ profile['action_timestamp'] }}</span>
+            </div>
+        </section>
+
+        <!-- POPIA Section 24 Self-Service Action Controls Center Row -->
+        <section class="card" style="background-color: #fafafa; border-style: dashed;">
+            <h2 style="color: var(--text-main); font-size: 1rem;">POPIA Right-to-be-Forgotten Tools (Section 24)</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 1rem;">
+                Under South African privacy laws, you reserve explicit rights to modify your tracking parameters or request complete systemic deletion of records.
+            </p>
+            <div class="action-zone">
+                <button class="btn-action" onclick="alert('BA Workflow Trigger: Redirecting to permission updating pipeline module...')">Update Consent Preferences</button>
+                <button class="btn-action btn-delete" onclick="alert('SARS Regulatory Check: This task triggers a BA pipeline checking active invoices before deleting personal identifying records.')">Request Data File Deletion</button>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>

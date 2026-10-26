@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PopiaGuard Platform Registration</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-canvas: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --brand-primary: #0f766e;
+            --brand-hover: #115e59;
+            --border-color: #e2e8f0;
+            --accent-success: #16a34a;
+            --accent-danger: #dc2626;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-canvas); color: var(--text-main); min-height: 100vh; padding: 2rem 1rem; display: flex; flex-direction: column; align-items: center; }
+
+        .evaluator-nav { background: #f0fdfa; border: 1px solid #ccfbf1; padding: 0.75rem 1.25rem; border-radius: 8px; width: 100%; max-width: 580px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .evaluator-nav span { font-size: 0.85rem; color: #0d9488; font-weight: 500; }
+        .nav-btn { background-color: var(--brand-primary); color: white; text-decoration: none; padding: 0.4rem 0.8rem; font-size: 0.8rem; font-weight: 600; border-radius: 6px; }
+
+        .card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; width: 100%; max-width: 580px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); overflow: hidden; }
+        .card-header { background: #fafafa; border-bottom: 1px solid var(--border-color); padding: 1.75rem; text-align: center; }
+        .card-header h1 { font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
+        .card-header p { font-size: 0.87rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+        .card-body { padding: 2rem; }
+        .alert { padding: 1rem; border-radius: 6px; font-size: 0.9rem; margin-bottom: 1.5rem; font-weight: 500; text-align: center; }
+        .alert-success { background-color: #f0fdf4; color: var(--accent-success); border: 1px solid #bbf7d0; }
+        .alert-danger { background-color: #fef2f2; color: var(--accent-danger); border: 1px solid #fecaca; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-size: 0.87rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-main); }
+        .form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.95rem; background-color: #fafafa; outline: none; }
+        .form-control:focus { border-color: var(--brand-primary); background-color: #fff; box-shadow: 0 0 0 3px rgba(15,118,110,0.1); }
+        
+        select.form-control { cursor: pointer; }
+
+        .declaration-title { font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin: 1.5rem 0 0.75rem 0; padding-top: 1rem; border-top: 1px dashed var(--border-color); }
+        .check-wrapper { display: flex; align-items: flex-start; gap: 0.75rem; background-color: #f8fafc; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 0.75rem; }
+        .check-wrapper input[type="checkbox"] { width: 1.1rem; height: 1.1rem; accent-color: var(--brand-primary); cursor: pointer; }
+        .check-label { font-size: 0.85rem; line-height: 1.4; color: var(--text-muted); }
+
+        .btn-submit { width: 100%; background-color: var(--brand-primary); color: white; border: none; padding: 0.85rem; font-size: 0.95rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-top: 1rem; }
+        .btn-submit:hover { background-color: var(--brand-hover); }
+
+        .card-footer { background-color: #f8fafc; border-top: 1px solid var(--border-color); padding: 1rem; text-align: center; font-size: 0.75rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <header class="evaluator-nav">
+        <span>Already have an account registered?</span>
+        <a href="/login" class="nav-btn">Sign In to Account →</a>
+    </header>
+
+    <main class="card">
+        <section class="card-header">
+            <h1>🛡️ PopiaGuard Gateway</h1>
+            <p>Dynamic Self-Service Registration Hub</p>
+        </section>
+        
+        <section class="card-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}{% for cat, msg in messages %}
+                    <div class="alert alert-{{ 'danger' if cat=='danger' else 'success' }}">{{ msg }}</div>
+                {% endfor %}{% endif %}
+            {% endwith %}
+
+            <form method="POST">
+                <div class="form-group">
+                    <label class="form-label">System Account Profile Role</label>
+                    <!-- Role Picker changes form configuration interactively -->
+                    <select name="role" id="roleSelector" class="form-control" onchange="toggleFormRoleLayout()">
+                        <option value="Consumer">Consumer (General Citizen Data Subject)</option>
+                        <option value="Compliance_Officer">Compliance Officer (Corporate Auditor Account)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Full Name & Surname</label>
+                    <input type="text" name="full_name" class="form-control" placeholder="e.g. Naledi Molefe" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-control" placeholder="name@domain.co.za" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">System Secure Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Create a secure access key" required>
+                </div>
+                
+                <!-- Consumer Specific Data Section Managed by Javascript -->
+                <div id="consumerSpecificContainer">
+                    <div class="form-group">
+                        <label class="form-label">South African ID Number</label>
+                        <input type="text" name="sa_id" id="saIdField" class="form-control" placeholder="13-Digit Numerical ID Code" maxlength="13" required>
+                    </div>
+                    
+                    <h3 class="declaration-title">POPIA Regulatory Declarations</h3>
+                    
+                    <label class="check-wrapper" for="mkt">
+                        <input type="checkbox" name="marketing" id="mkt">
+                        <span class="check-label">I grant explicit compliance clearance authorizing the firm to retain and process my personal data strings.</span>
+                    </label>
+                    
+                    <label class="check-wrapper" for="tp">
+                        <input type="checkbox" name="third_party" id="tp">
+                        <span class="check-label">I consent to passing identity verification flags to partnered credit verification networks.</span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-submit">Complete System Registration</button>
+            </form>
+        </section>
+        
+        <footer class="card-footer">
+            Integrated Framework Engine secure tracking parameters active.
+        </footer>
+    </main>
+
+    <!-- Client-Side Javascript Adjusting View Parameters Instantly -->
+    <script>
+        function toggleFormRoleLayout() {
+            var role = document.getElementById("roleSelector").value;
+            var consumerContainer = document.getElementById("consumerSpecificContainer");
+            var idField = document.getElementById("saIdField");
+            
+            if (role === "Compliance_Officer") {
+                // Remove requirements and hide layout fields for Admin
+                consumerContainer.style.display = "none";
+                idField.removeAttribute("required");
+            } else {
+                // Restore fields for Consumer workflow
+                consumerContainer.style.display = "block";
+                idField.setAttribute("required", "required");
+            }
+        }
+    </script>
+</body>
+</html>

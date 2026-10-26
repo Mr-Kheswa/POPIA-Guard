@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access Authentication Gate</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-canvas: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --brand-primary: #0f766e;
+            --border-color: #e2e8f0;
+            --accent-danger: #dc2626;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-canvas); color: var(--text-main); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+
+        .login-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); padding: 2.25rem; }
+        .text-center { text-align: center; margin-bottom: 1.5rem; }
+        .text-center h2 { font-size: 1.3rem; font-weight: 700; color: var(--text-main); }
+        .text-center p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+        .alert-danger { padding: 0.75rem; border-radius: 6px; font-size: 0.85rem; text-align: center; margin-bottom: 1.25rem; font-weight: 500; background-color: #fef2f2; color: var(--accent-danger); border: 1px solid #fecaca; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-main); text-transform: uppercase; }
+        .form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.9rem; background-color: #fafafa; outline: none; }
+        .form-control:focus { border-color: var(--brand-primary); background-color: #fff; }
+
+        .btn-auth { width: 100%; background-color: var(--brand-primary); color: white; border: none; padding: 0.8rem; font-size: 0.9rem; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
+        .btn-auth:hover { background-color: #115e59; }
+
+        .back-link { display: block; text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted); text-decoration: none; }
+        .back-link:hover { color: var(--brand-primary); }
+    </style>
+</head>
+<body>
+
+    <main class="login-card">
+        <header class="text-center">
+            <h2>Account Sign-In</h2>
+            <p>Access Portal Identity Verification Room</p>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}{% for cat, msg in messages %}
+                <div class="alert-danger">{{ msg }}</div>
+            -- {% endfor %}{% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label class="form-label">Account Email Address</label>
+                <!-- Inputs are now clean and empty for personalized self-registration checks -->
+                <input type="email" name="email" class="form-control" placeholder="name@domain.co.za" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password Key</label>
+                <input type="password" name="password" class="form-control" placeholder="Enter account password" required>
+            </div>
+            <button type="submit" class="btn-auth">Authenticate System Entry</button>
+        </form>
+
+        <a href="/register" class="back-link">← Need to register an account?</a>
+    </main>
+
+</body>
+</html>
